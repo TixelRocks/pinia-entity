@@ -1,15 +1,16 @@
 {
   "name": "@tixel/pinia-entity",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "dist/EntityAdapter.js",
   "types": "dist/EntityAdapter.d.ts",
   "scripts": {
     "test": "jest",
     "lint": "eslint --fix",
-    "prepare": "husky install"
+    "build": "tsc",
+    "preversion": "npm run lint && npm test",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm test && npm run lint"
   },
-  "prepare": "npm run build",
-  "prepublishOnly": "npm test && npm run lint",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/TixelRocks/pinia-entity.git"
