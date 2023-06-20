@@ -1,4 +1,4 @@
-import { EntityState, createAdapter } from '../EntityAdapter';
+import { EntityState, createAdapter } from '../src/EntityAdapter';
 
 type TestEntity = { id: string; name: string };
 

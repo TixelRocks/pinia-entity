@@ -1,25 +1,49 @@
 {
   "name": "@tixel/pinia-entity",
-  "version": "0.0.1",
-  "description": "",
-  "main": "index.ts",
+  "version": "0.0.2",
+  "main": "dist/EntityAdapter.js",
+  "types": "dist/EntityAdapter.d.ts",
   "scripts": {
-    "test": "jest --verbose"
+    "test": "jest",
+    "lint": "eslint --fix",
+    "prepare": "husky install"
   },
+  "prepare": "npm run build",
+  "prepublishOnly": "npm test && npm run lint",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tixel/pinia-entity.git"
+    "url": "git+https://github.com/TixelRocks/pinia-entity.git"
   },
   "author": "Ian Jamieson",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/tixel/pinia-entity/issues"
+    "url": "https://github.com/TixelRocks/pinia-entity/issues"
   },
-  "homepage": "https://github.com/tixel/pinia-entity#readme",
+  "homepage": "https://github.com/TixelRocks/pinia-entity#readme",
+  "description": "",
+  "files": [
+    "dist/**/*"
+  ],
+  "lint-staged": {
+    "**/*.{ts,js,vue}": [
+      "prettier -w",
+      "npm run lint"
+    ]
+  },
   "devDependencies": {
     "@types/jest": "^29.5.2",
+    "@typescript-eslint/eslint-plugin": "^5.60.0",
+    "@typescript-eslint/parser": "^5.60.0",
+    "eslint": "^8.43.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "husky": "^8.0.3",
     "jest": "^29.5.0",
+    "lint-staged": "^13.2.2",
+    "prettier": "^2.8.8",
     "ts-jest": "^29.1.0",
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.9.1",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^5.0.4"
   }
 }
