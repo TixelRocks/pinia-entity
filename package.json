@@ -1,6 +1,6 @@
 {
   "name": "@tixel/pinia-entity",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "main": "dist/EntityAdapter.js",
   "types": "dist/EntityAdapter.d.ts",
   "scripts": {
