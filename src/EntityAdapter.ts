@@ -27,11 +27,9 @@ export function createAdapter<T>(adapterId: string) {
     state.entities = {};
   }
 
-  const getAll =
-    (state: EntityState<T>): (() => T[]) =>
-    (): T[] => {
-      return Object.values(state.entities);
-    };
+  const getAll = (state: EntityState<T>): T[] => {
+    return Object.values(state.entities);
+  };
 
   const getById =
     (state: EntityState<T>): ((id: string) => T) =>

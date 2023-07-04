@@ -92,7 +92,7 @@ describe('EntityAdapter', () => {
 
       adapter.addMany(state, testStateToAdd);
 
-      expect(adapter.getSelectors().getAll(state)()).toEqual(testStateToAdd);
+      expect(adapter.getSelectors().getAll(state)).toEqual(testStateToAdd);
     });
   });
   describe('getById', () => {
