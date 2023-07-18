@@ -17,7 +17,9 @@ export function createAdapter<T>(adapterId: string) {
       ...state.entities,
       [entityId]: entity,
     };
-    state.ids.push(entityId);
+    if (!state.ids.includes(entityId)) {
+      state.ids.push(entityId);
+    }
   }
   function addMany(state: EntityState<T>, entities: T[]): void {
     entities.forEach((entity) => addOne(state, entity));

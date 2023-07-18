@@ -45,6 +45,27 @@ describe('EntityAdapter', () => {
       expect(state.ids).toEqual(['test-id']);
       expect(state.entities).toEqual({ 'test-id': { id: 'test-id', name: 'test-name' } });
     });
+    it('should overwrite matching ids', () => {
+      const state: EntityState<TestEntity> = {
+        ids: [],
+        entities: {},
+      };
+
+      const adapter = createAdapter('id');
+
+      adapter.addOne(state, {
+        id: 'test-id',
+        name: 'test-name',
+      });
+
+      adapter.addOne(state, {
+        id: 'test-id',
+        name: 'test-name-updated',
+      });
+
+      expect(state.ids).toEqual(['test-id']);
+      expect(state.entities).toEqual({ 'test-id': { id: 'test-id', name: 'test-name-updated' } });
+    });
   });
   describe('addMany', () => {
     it('should add many entities', () => {
@@ -62,6 +83,29 @@ describe('EntityAdapter', () => {
         'test-id': { id: 'test-id', name: 'test-name' },
         'test-id2': { id: 'test-id2', name: 'test-name2' },
         'test-id3': { id: 'test-id3', name: 'test-name3' },
+      });
+    });
+    it('should overwrite matching ids', () => {
+      const state: EntityState<TestEntity> = {
+        ids: [],
+        entities: {},
+      };
+
+      const adapter = createAdapter('id');
+
+      adapter.addMany(state, testStateToAdd);
+
+      // add again, appending "-updated" to the name
+      adapter.addMany(
+        state,
+        testStateToAdd.map((entity) => ({ ...entity, name: `${entity.name}-updated` }))
+      );
+
+      expect(state.ids).toEqual(['test-id', 'test-id2', 'test-id3']);
+      expect(state.entities).toEqual({
+        'test-id': { id: 'test-id', name: 'test-name-updated' },
+        'test-id2': { id: 'test-id2', name: 'test-name2-updated' },
+        'test-id3': { id: 'test-id3', name: 'test-name3-updated' },
       });
     });
   });
