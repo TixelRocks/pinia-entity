@@ -1,3 +1,5 @@
+import { flatten } from 'flat';
+
 export interface Entity<T> {
   [id: string]: T;
 }
@@ -11,8 +13,11 @@ export function createAdapter<T>(adapterId: string) {
   if (!adapterId) {
     throw new Error('adapterId is required, this is the key for the entity, generally the value will be "id"');
   }
+  function getId(entity: T) {
+    return flatten<T, Record<string, string>>(entity)[adapterId];
+  }
   function addOne(state: EntityState<T>, entity: T): void {
-    const entityId = (entity as Record<string, string>)[adapterId];
+    const entityId = getId(entity);
     state.entities = {
       ...state.entities,
       [entityId]: entity,
@@ -23,6 +28,14 @@ export function createAdapter<T>(adapterId: string) {
   }
   function addMany(state: EntityState<T>, entities: T[]): void {
     entities.forEach((entity) => addOne(state, entity));
+  }
+  function removeOne(state: EntityState<T>, entity: T): void {
+    const entityId = getId(entity);
+    state.ids = state.ids.filter((id) => id !== entityId);
+    delete state.entities[entityId];
+  }
+  function removeMany(state: EntityState<T>, entities: T[]): void {
+    entities.forEach((entity) => removeOne(state, entity));
   }
   function clear(state: EntityState<T>) {
     state.ids = [];
@@ -42,6 +55,8 @@ export function createAdapter<T>(adapterId: string) {
     addOne,
     addMany,
     clear,
+    removeOne,
+    removeMany,
     getSelectors: () => ({
       getAll,
       getById,
