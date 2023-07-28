@@ -45,6 +45,24 @@ describe('EntityAdapter', () => {
       expect(state.ids).toEqual(['test-id']);
       expect(state.entities).toEqual({ 'test-id': { id: 'test-id', name: 'test-name' } });
     });
+    it('should add one entity with a nested id', () => {
+      const state: EntityState<TestEntity> = {
+        ids: [],
+        entities: {},
+      };
+
+      const adapter = createAdapter('nested.id');
+
+      adapter.addOne(state, {
+        nested: {
+          id: 'test-id',
+        },
+        name: 'test-name',
+      });
+
+      expect(state.ids).toEqual(['test-id']);
+      expect(state.entities).toEqual({ 'test-id': { nested: { id: 'test-id' }, name: 'test-name' } });
+    });
     it('should overwrite matching ids', () => {
       const state: EntityState<TestEntity> = {
         ids: [],

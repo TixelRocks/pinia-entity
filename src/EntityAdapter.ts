@@ -1,3 +1,5 @@
+import { flatten } from 'flat';
+
 export interface Entity<T> {
   [id: string]: T;
 }
@@ -12,7 +14,7 @@ export function createAdapter<T>(adapterId: string) {
     throw new Error('adapterId is required, this is the key for the entity, generally the value will be "id"');
   }
   function addOne(state: EntityState<T>, entity: T): void {
-    const entityId = (entity as Record<string, string>)[adapterId];
+    const entityId = flatten<T, Record<string, string>>(entity)[adapterId];
     state.entities = {
       ...state.entities,
       [entityId]: entity,
