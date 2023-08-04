@@ -45,6 +45,27 @@ describe('EntityAdapter', () => {
       expect(state.ids).toEqual(['test-id']);
       expect(state.entities).toEqual({ 'test-id': { id: 'test-id', name: 'test-name' } });
     });
+    it('should append the entity', () => {
+      const state: EntityState<TestEntity> = {
+        ids: ['test-id-1'],
+        entities: {
+          'test-id-1': {
+            id: 'test-id-1',
+            name: 'initial value',
+          },
+        },
+      };
+
+      const adapter = createAdapter('id');
+
+      adapter.prependOne(state, {
+        id: 'test-id-2',
+        name: 'this should go to the end',
+      });
+
+      expect(state.ids).toEqual(['test-id-2', 'test-id-1']);
+      expect(state.entities).toEqual({ 'test-id-1': { id: 'test-id-1', name: 'initial value' }, 'test-id-2': { id: 'test-id-2', name: 'this should go to the end' } });
+    });
     it('should add one entity with a nested id', () => {
       const state: EntityState<TestEntity> = {
         ids: [],
@@ -125,6 +146,68 @@ describe('EntityAdapter', () => {
         'test-id2': { id: 'test-id2', name: 'test-name2-updated' },
         'test-id3': { id: 'test-id3', name: 'test-name3-updated' },
       });
+    });
+  });
+  describe('prependOne', () => {
+    it('should add one entity to the beginning', () => {
+      const state: EntityState<TestEntity> = {
+        ids: ['test-id-1'],
+        entities: {
+          'test-id-1': {
+            id: 'test-id-1',
+            name: 'initial value',
+          },
+        },
+      };
+
+      const adapter = createAdapter('id');
+
+      adapter.prependOne(state, {
+        id: 'test-id-2',
+        name: 'this should go to the beginning',
+      });
+
+      expect(state.ids).toEqual(['test-id-2', 'test-id-1']);
+      expect(state.entities).toEqual({ 'test-id-2': { id: 'test-id-2', name: 'this should go to the beginning' }, 'test-id-1': { id: 'test-id-1', name: 'initial value' } });
+    });
+    it('should prepend one entity with a nested id', () => {
+      const state: EntityState<TestEntity> = {
+        ids: [],
+        entities: {},
+      };
+
+      const adapter = createAdapter('nested.id');
+
+      adapter.prependOne(state, {
+        nested: {
+          id: 'test-id',
+        },
+        name: 'test-name',
+      });
+
+      expect(state.ids).toEqual(['test-id']);
+      expect(state.entities).toEqual({ 'test-id': { nested: { id: 'test-id' }, name: 'test-name' } });
+    });
+    it('should overwrite matching ids', () => {
+      const state: EntityState<TestEntity> = {
+        ids: [],
+        entities: {},
+      };
+
+      const adapter = createAdapter('id');
+
+      adapter.prependOne(state, {
+        id: 'test-id',
+        name: 'test-name',
+      });
+
+      adapter.prependOne(state, {
+        id: 'test-id',
+        name: 'test-name-updated',
+      });
+
+      expect(state.ids).toEqual(['test-id']);
+      expect(state.entities).toEqual({ 'test-id': { id: 'test-id', name: 'test-name-updated' } });
     });
   });
   describe('clear', () => {
