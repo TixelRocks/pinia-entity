@@ -35,7 +35,20 @@ export function createAdapter<T>(adapterId: string) {
     delete state.entities[entityId];
   }
   function removeMany(state: EntityState<T>, entities: T[]): void {
+    console.log(entities);
     entities.forEach((entity) => removeOne(state, entity));
+  }
+  function prependOne(state: EntityState<T>, entity: T): void {
+    const entityId = flatten<T, Record<string, string>>(entity)[adapterId];
+    delete state.entities[entityId];
+
+    state.entities = {
+      [entityId]: entity,
+      ...state.entities,
+    };
+    if (!state.ids.includes(entityId)) {
+      state.ids.unshift(entityId);
+    }
   }
   function clear(state: EntityState<T>) {
     state.ids = [];
@@ -54,6 +67,7 @@ export function createAdapter<T>(adapterId: string) {
   return {
     addOne,
     addMany,
+    prependOne,
     clear,
     removeOne,
     removeMany,
