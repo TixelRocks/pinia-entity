@@ -35,7 +35,6 @@ export function createAdapter<T>(adapterId: string) {
     delete state.entities[entityId];
   }
   function removeMany(state: EntityState<T>, entities: T[]): void {
-    console.log(entities);
     entities.forEach((entity) => removeOne(state, entity));
   }
   function prependOne(state: EntityState<T>, entity: T): void {

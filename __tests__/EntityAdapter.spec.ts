@@ -1,32 +1,34 @@
 import { EntityState, createAdapter } from '../src/EntityAdapter';
 
 type TestEntity = { id: string; name: string };
-
-// fixtures
-const testStateToAdd = [
-  {
-    id: 'test-id',
-    name: 'test-name',
-  },
-  {
-    id: 'test-id2',
-    name: 'test-name2',
-  },
-  {
-    id: 'test-id3',
-    name: 'test-name3',
-  },
-];
-const testState: EntityState<TestEntity> = {
-  ids: Object.values(testStateToAdd).map((entity) => entity.id),
-  entities: Object.values(testStateToAdd).reduce((acc, entity) => {
-    return {
-      ...acc,
-      [entity.id]: entity,
-    };
-  }, {}),
-};
-
+let testStateToAdd: TestEntity[];
+let testState: EntityState<TestEntity>;
+beforeEach(() => {
+  // fixtures
+  testStateToAdd = [
+    {
+      id: 'test-id',
+      name: 'test-name',
+    },
+    {
+      id: 'test-id2',
+      name: 'test-name2',
+    },
+    {
+      id: 'test-id3',
+      name: 'test-name3',
+    },
+  ];
+  testState = {
+    ids: Object.values(testStateToAdd).map((entity) => entity.id),
+    entities: Object.values(testStateToAdd).reduce((acc, entity) => {
+      return {
+        ...acc,
+        [entity.id]: entity,
+      };
+    }, {}),
+  };
+});
 describe('EntityAdapter', () => {
   describe('createAdapter', () => {
     it('should create an adapter', () => {
@@ -273,6 +275,8 @@ describe('EntityAdapter', () => {
       const state: EntityState<TestEntity> = testState;
 
       const adapter = createAdapter('id');
+
+      console.log(testState.entities['test-id2']);
 
       adapter.removeMany(state, [testState.entities['test-id2'], testState.entities['test-id3']]);
 
