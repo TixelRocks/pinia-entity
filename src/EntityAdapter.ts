@@ -58,6 +58,10 @@ export function createAdapter<T>(adapterId: string) {
     return Object.values(state.entities);
   };
 
+  const isEmpty = (state: EntityState<T>): boolean => {
+    return state.ids.length <= 0;
+  };
+
   const getById =
     (state: EntityState<T>): ((id: string) => T) =>
     (id: string): T =>
@@ -73,6 +77,7 @@ export function createAdapter<T>(adapterId: string) {
     getSelectors: () => ({
       getAll,
       getById,
+      isEmpty,
     }),
   };
 }

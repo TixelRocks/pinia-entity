@@ -314,4 +314,28 @@ describe('EntityAdapter', () => {
       expect(adapter.getSelectors().getById(state)('test-id')).toEqual({ id: 'test-id', name: 'test-name' });
     });
   });
+  describe('isEmpty', () => {
+    it('should return true', () => {
+      const state: EntityState<TestEntity> = {
+        ids: [],
+        entities: {},
+      };
+
+      const adapter = createAdapter('id');
+
+      expect(adapter.getSelectors().isEmpty(state)).toEqual(true);
+    });
+    it('should return false', () => {
+      const state: EntityState<TestEntity> = {
+        ids: [],
+        entities: {},
+      };
+
+      const adapter = createAdapter('id');
+
+      adapter.addMany(state, testStateToAdd);
+
+      expect(adapter.getSelectors().isEmpty(state)).toEqual(false);
+    });
+  });
 });
