@@ -276,8 +276,6 @@ describe('EntityAdapter', () => {
 
       const adapter = createAdapter('id');
 
-      console.log(testState.entities['test-id2']);
-
       adapter.removeMany(state, [testState.entities['test-id2'], testState.entities['test-id3']]);
 
       expect(state.ids).toEqual(['test-id']);
